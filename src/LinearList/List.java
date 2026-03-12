@@ -43,7 +43,6 @@ public class List {
         Node node = new Node(data);
         if(head == null){
             head = node;
-            return;
         } else {
             Node pointer = head;
             while (pointer != null) {
@@ -110,7 +109,6 @@ public class List {
         }
         if (index > lastIndex()){
             System.out.println("Индекс больше последнего индекса");
-            return;
         } else {
             while (counter != index - 1){
                 pointer = pointer.nextNode;
@@ -138,7 +136,6 @@ public class List {
         }
         if (index < 0){
             System.out.println("Индекс не может быть меньше 0");
-            return;
         } else {
             while (counter != index - 1){
                 if (pointer == null){
@@ -196,7 +193,6 @@ public class List {
         }
         if (index == 0){
             removeFromStart();
-            return;
         } else {
             while (counter != index - 1){
                 if (pointer == null){
@@ -210,14 +206,133 @@ public class List {
         }
     }
 
-    //Добавление на какую-то позицию массива
-    public void addMassiveInMiddle(int[] massive){
-        if (massive.length == 0){  //Я не знаю, надо здесь такую проверку делать или она противоречит простоте кода, т.к дополнительно по массиву проходимся?
+    //Добавление в конец массива
+    public void addMassiveInEnd(int[] massive){
+        int size = massive.length;
+        if (size == 0){
             System.out.println("Масиив пуст, добавлять нечего");
+        } else {
+            int counter = 0;
+            while (counter != size){
+                addInEnd(massive[counter]);
+                counter += 1;
+            }
+        }
+    }
+
+    //Ещё добавление в конец массива
+    public void addMassiveInEnd1(int[] massive){
+        if (massive.length == 0){
+            System.out.println("Масиив пуст, добавлять нечего");
+        } else {
+            for (int data : massive){
+                addInEnd(data);
+            }
+        }
+    }
+
+    //Добавление на какую-то позицию массива
+    public void addMassiveInMiddle(int[] massive, int index){
+        if (massive.length == 0){
+            System.out.println("Массив пуст, добавлять нечего");
+        } else {
+            if (index < 0){
+                System.out.println("Индекс не может быть отрицательным");
+                return;
+            }
+            if (head == null){
+                System.out.println("Списко пуст");
+                if (index == 0){
+                    for (int data : massive){
+                        addInEnd(data);
+                    }
+                } else {
+                    System.out.println("Индекс больше конечного индекса");
+                }
+            } else {
+                Node pointer = head;
+                int counter = 0;
+                while(counter != index - 1){
+                    if (pointer == null){
+                        System.out.println("Индекс больше конечного индекса");
+                        return;
+                    }
+                    pointer = pointer.nextNode;
+                    counter += 1;
+                }
+                for (int data : massive){
+                    Node node = new Node(data);
+                    node.nextNode = pointer.nextNode;
+                    pointer.nextNode = node;
+                    pointer = node;
+                }
+            }
+        }
+    }
+
+    //Удаление начиная с какой-то позиции
+    public void removeAllFromMiddle(int index){
+        if (head == null){
+            System.out.println("Массив пустой, удалять нечего");
             return;
         }
-        for (int data : massive){
+        if (index < 0){
+            System.out.println("Индекс не может быть отрицательным");
+            return;
+        }
+        if (index == 0){
+            head = null;
+        } else {
+            int counter = 0;
+            Node pointer = head;
+            while (counter != index - 1){
+                if (pointer == null){
+                    System.out.println("Индекс больше конечного индекса");
+                    return;
+                }
+                pointer = pointer.nextNode;
+                counter += 1;
+            }
+            pointer.nextNode = null;
+        }
+    }
 
+    //Удаление с какой-то позиции по какую-то ???
+    public void removeMassiveFromMiddle(int start, int end){ //End тоже удаляем
+        if (head == null){
+            System.out.println("Список пуст");
+            return;
+        }
+        if (start < 0 || end < 0){
+            System.out.println("Индекс не может быть отрицательным");
+            return;
+        }
+        if (end < start){
+            System.out.println("Некорректный диапозон");
+        } else {
+            Node pointer = head;
+            int counter = 0;
+            Node pack;
+            while (counter != end){
+                if (counter == start){
+                    pack = pointer;
+                }
+                if (counter <= start && pointer == null){
+                    System.out.println("Индекс начала удаления больше конечного индекса списка");
+                    return;
+                }
+                if (counter >= start && counter < end && pointer == null){
+                    pack.nextNode = null;
+                    return;
+                }
+                pointer = pointer.nextNode;
+                counter += 1;
+            }
+            if (pointer.nextNode == null){
+                pack.nextNode = null;
+            } else {
+                pack.nextNode = pointer.nextNode;
+            }
         }
     }
 
