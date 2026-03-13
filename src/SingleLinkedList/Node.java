@@ -1,4 +1,4 @@
-package LinearList;
+package SingleLinkedList;
 
 public class Node {
     public int data;

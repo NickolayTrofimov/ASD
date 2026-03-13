@@ -1,20 +1,20 @@
-package LinearList;
+package SingleLinkedList;
 
-public class List {
+public class SingleLinkedList {
     private Node head;
 
     //Создание пустого списка
-    public List(){
+    public SingleLinkedList(){
         head = null;
     }
 
     //Создание списка с одним элементом
-    public List(int data){
+    public SingleLinkedList(int data){
         head = new Node(data);
     }
 
     //Создание списка с массивом
-    public List(int[] massive){
+    public SingleLinkedList(int[] massive){
         for (int data : massive){
             addInEnd(data);
         }
@@ -297,8 +297,8 @@ public class List {
         }
     }
 
-    //Удаление с какой-то позиции по какую-то ???
-    public void removeMassiveFromMiddle(int start, int end){ //End тоже удаляем
+    //Удаление с какой-то позиции по какую-то
+    public void removeMassiveFromMiddle(int start, int end){ //Start и end тоже удаляем
         if (head == null){
             System.out.println("Список пуст");
             return;
@@ -312,27 +312,25 @@ public class List {
         } else {
             Node pointer = head;
             int counter = 0;
-            Node pack;
-            while (counter != end){
-                if (counter == start){
-                    pack = pointer;
-                }
-                if (counter <= start && pointer == null){
-                    System.out.println("Индекс начала удаления больше конечного индекса списка");
-                    return;
-                }
-                if (counter >= start && counter < end && pointer == null){
-                    pack.nextNode = null;
+            Node beforeStart;
+            while(counter != start - 1){
+                if (pointer == null){
+                    System.out.println("Начальный индекс удаления меньше конечного индекса списка");
                     return;
                 }
                 pointer = pointer.nextNode;
                 counter += 1;
             }
-            if (pointer.nextNode == null){
-                pack.nextNode = null;
-            } else {
-                pack.nextNode = pointer.nextNode;
+            beforeStart = pointer;
+            while(counter != end){
+                if (pointer == null){
+                    beforeStart.nextNode = null;
+                    return;
+                }
+                pointer = pointer.nextNode;
+                counter += 1;
             }
+            beforeStart.nextNode = pointer.nextNode;
         }
     }
 
@@ -397,7 +395,57 @@ public class List {
         return flag;
     }
 
-    //Получение индекса некоторого значения
+    //Удаления все вхождения какого-то значения
+    public void removeNodeWithData(int data){
+        if (head == null){
+            System.out.println("Список пуст, удалять нечего");
+        } else {
+            Node pointer = head;
+            while (pointer.data == data){
+                pointer = pointer.nextNode;
+            }
+            head = pointer;
+            while (pointer != null){
+                if (pointer.nextNode.data == data){
+                    pointer.nextNode = pointer.nextNode.nextNode;
+                }
+                pointer = pointer.nextNode;
+            }
+        }
+    }
 
+    //Получение индексов некоторого значения
+    public void getIndexes(int data){
+        Node pointer = head;
+        int counter = 0;
+        while(pointer != null){
+            if (pointer.data == data){
+                System.out.println(counter);
+            }
+            pointer = pointer.nextNode;
+            counter += 1;
+        }
+    }
 
+    //Перевернуть линейный список за 1 проход
+    public void reverse(){
+        if (head == null){
+            System.out.println("Список пуст");
+            return;
+        }
+        if (head.nextNode == null){
+            System.out.println("Список из одного элемента");
+        } else {
+            Node pointer = head;
+            Node previous = null;
+            Node next = null;
+            while (pointer != null){
+                next = pointer.nextNode;
+                pointer.nextNode = previous;
+                previous = pointer;
+                pointer = next;
+            }
+            head = previous;
+        }
+    }
 }
